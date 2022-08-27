@@ -77,4 +77,22 @@ contract MAX is IERC20{
         return true;
     }
 
+    function mint(uint _newTokens) external {
+        require(msg.sender == founder);
+
+        totalSupply += _newTokens;
+        balances[msg.sender] += _newTokens;
+
+        // didnt use function because the address(0) should have tokens to transfer to the founder's address   
+        emit Transfer(address(0), msg.sender, _newTokens);
+        }
+
+    function burn(uint _burnTokens) public {
+        require(_burnTokens <= balances[msg.sender]);
+
+        totalSupply -= _burnTokens;
+
+        transferFrom(msg.sender, address(0), _burnTokens);
+    }
+
 }
